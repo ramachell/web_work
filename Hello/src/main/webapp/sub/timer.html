@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step09_timer.html</title>
+
+    <style>
+        p {
+            font-size: 50px;
+            background-color: aqua;
+            width: 500px;
+            height: 500px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="tm_min"><strong> 분</strong>
+    <input type="text" id="tm_sec"><strong> 초</strong>
+    <input type="text" id="tm_milsec">
+    <button id="tmrst">타이머 리셋</button>
+    <br>
+    <br>
+    <button id="tmset">시간 설정</button>
+
+
+    <div>
+        <p id="clock">
+            <strong id="min">00</strong> 분
+            <strong id="sec">00</strong> 초
+            <strong id="milsec">00</strong>
+        </p>
+    </div>
+    <button id="str">시작</button>
+    <button id="rst">리셋</button>
+    
+
+    <script>
+        // 한자리 숫자일경우 두자리로 표시 (0n)
+        to00 = (i) => {
+            return String(i).padStart(2, "0");
+        }
+        // 값이 비었을경우 0으로 변환
+        emptyZero = (value) => {
+            if (value == "" || value == null || value == undefined)
+                return 0;
+            else return value;
+        }
+
+        let milsec = 0;
+        let sec = 0;
+        let min = 0;
+        let isRun = false; // false 정지상태 , true 동작중
+        let tm_min = 0;
+        let tm_sec = 0;
+        let tm_milsec = 0;
+        let isTimer = false;
+
+        let val_tm_min = 0;
+        let val_tm_sec = 0;
+        let val_tm_milsec = 0;
+        let iswarning = false;
+
+        document.querySelector("#tmrst").addEventListener("click", (e) => {
+            document.querySelector("#tm_min").value=null;
+            document.querySelector("#tm_sec").value=null;
+            document.querySelector("#tm_milsec").value=null;
+        })
+
+        document.querySelector("#tmset").addEventListener("click", (e) => {
+            // timer input 의 value를 가져오기 , input 비어있을경우 emptyZero로 0반환
+            val_tm_min = emptyZero(document.querySelector("#tm_min").value);
+            val_tm_sec = emptyZero(document.querySelector("#tm_sec").value);
+            val_tm_milsec = emptyZero(document.querySelector("#tm_milsec").value);
+
+            // 입력한 시간이 숫자가 맞는지 테스트
+            // 숫자가 아닐경우 alert 출력 , iswarning true
+            if (isNaN(val_tm_min) || isNaN(val_tm_sec) || isNaN(val_tm_milsec)) {
+                alert("제대로 된 시간이 아닙니다");
+                iswarning = true;
+            }
+
+            // 숫자를 두자리(00)로 출력
+            else {
+                if (val_tm_milsec >= 100) {
+                    val_tm_milsec_fl = Math.floor(val_tm_milsec / 100)
+                    val_tm_milsec %= 100;
+                    val_tm_sec = parseInt(val_tm_sec) + val_tm_milsec_fl;
+                }
+
+                if (val_tm_sec >= 60) {
+                    val_tm_sec_fl = Math.floor(val_tm_sec / 60)
+                    val_tm_sec %= 60;
+                    val_tm_min = parseInt(val_tm_min) + val_tm_sec_fl;
+                }
+
+
+                iswarning = false;
+                tm_min = to00(val_tm_min);
+                tm_sec = to00(val_tm_sec);
+                tm_milsec = to00(val_tm_milsec);
+            };
+
+            // 가져온 value를 타이머에 넣기
+            document.querySelector("#milsec").innerText = to00(tm_milsec);
+            milsec = tm_milsec;
+            document.querySelector("#sec").innerText = to00(tm_sec);
+            sec = tm_sec;
+            document.querySelector("#min").innerText = to00(tm_min);
+            min = tm_min;
+            // 타이머 상태 on
+            isTimer = true;
+            document.querySelector("p").style.backgroundColor = "aqua";
+        });
+
+
+        // 시작버튼
+        document.querySelector("#str").addEventListener("click", (ev) => {
+            document.querySelector("p").style.backgroundColor = "aqua";
+            if (!isRun) {
+                isRun = !isRun;
+                ev.target.innerText = "일시정지";
+            } else {
+                isRun = !isRun;
+                ev.target.innerText = "시작";
+            }
+        });
+        // 리셋버튼
+        document.querySelector("#rst").addEventListener("click", (e) => {
+            isRun = false;
+            isTimer = false;
+            iswarning = false;
+            milsec = 0;
+            sec = 0;
+            min = 0;
+            tm_milsec = 0;
+            tm_sec = 0;
+            tm_min = 0;
+            document.querySelector("#milsec").innerText = to00(milsec);
+            document.querySelector("#sec").innerText = to00(sec);
+            document.querySelector("#min").innerText = to00(min);
+            document.querySelector("#str").innerText = "시작";
+            document.querySelector("p").style.backgroundColor = "aqua";
+
+        })
+
+        setInterval(() => {
+            if (!isRun || iswarning) return;
+            // 타이머상태인지 , 타이머 시간이 다됐는지 체크
+            if (isTimer == true && milsec == 0 && sec == 0 && min == 0) {
+                isRun = false;
+                isTimer = false;
+                document.querySelector("p").style.backgroundColor = "aquamarine";
+                document.querySelector("#str").innerText = "시작";
+                alert("타이머가 종료되었습니다.")
+                return;
+            }
+            // 스톱워치 
+            if (!isTimer) {
+                milsec++;
+                if (milsec == 100) { sec++; milsec = 0; }
+                if (sec == 60) { min++; sec = 0; }
+            } else {
+                // 타이머기능
+                milsec--;
+                if (milsec == -1) { sec--; milsec = 99; }
+                if (sec == -1) { min--; sec = 59; }
+            }
+            // to00 메소드로 숫자 두글자(00)로 표기
+            document.querySelector("#milsec").innerText = to00(milsec);
+            document.querySelector("#sec").innerText = to00(sec);
+            document.querySelector("#min").innerText = to00(min);
+
+        }, 10);
+
+
+    </script>
+
+</body>
+
+</html>
