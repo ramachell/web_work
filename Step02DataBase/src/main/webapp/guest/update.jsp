@@ -7,6 +7,8 @@ request.setCharacterEncoding("utf-8");
 int num = Integer.parseInt(request.getParameter("num"));
 String writer = request.getParameter("writer");
 String content = request.getParameter("content");
+String pwd = request.getParameter("pwd");
+
 
 // dto 객체 하나 만들기 + 생성자로 바로 데이터입력
 GuestDto dto = new GuestDto();
@@ -15,8 +17,13 @@ dto.setWriter(writer);
 dto.setContent(content);
 // dao 객체 얻어오기
 GuestDao dao = GuestDao.getInstance();
-// boolean으로 update 성공 or 실패 받아오기
-boolean isSuccess = dao.update(dto);
+boolean isSuccess;
+boolean pwdck = dao.getData(num).getPwd().equals(pwd);
+if (pwdck){
+isSuccess = dao.update(dto);
+} else {
+	isSuccess = false;
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -33,6 +40,12 @@ boolean isSuccess = dao.update(dto);
 		<p class="alert alert-success">
 			<strong><%=num%></strong> 번 회원의 정보를 수정했습니다. <a href="list.jsp">목록보기</a>
 		</p>
+		<%} else if(!pwdck){ %>
+		<p class="alert alert-success">
+			<strong></strong> 비밀번호가 틀렸습니다. <a href="list.jsp">목록보기</a>
+		</p>
+		
+		
 		<%} else {%>
 		<p class="alert alert-warning">
 			수정실패! <a href="updateform.jsp?num=<%=num%>">다시 수정</a>

@@ -39,6 +39,10 @@ GuestDto dto = GuestDao.getInstance().getData(num);
 				<label for="content">글내용</label>
 				<textarea name="content" id="content" cols="70" rows="1" ><%=dto.getContent()%></textarea>
 			</div>
+			<div class="mb-1">
+				<label for="pwd">비밀번호</label>
+				<input type="text" id="pwd" name="pwd" />
+			</div>
 			<div>
 				<label for="regdate">글 작성날짜 <%=dto.getRegdate()%></label>
 			</div>
