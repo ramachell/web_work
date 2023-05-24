@@ -21,13 +21,6 @@ public class send2 extends HttpServlet {
 	 * 응답과 관련된 작업처리시 사용
 	 * 
 	 */
-	public static void main(String[] args) {
-		study(0);
-	}
-
-	public static void study(int a) {
-
-	}
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

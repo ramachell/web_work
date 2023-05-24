@@ -12,6 +12,14 @@
 <title>index.jsp</title>
 </head>
 <body>
-
+	<ul>
+		<li><a href="member/list.jsp">member 보기</a></li>
+		<li><a href="member/list.jsp">member 보기</a></li>
+	</ul>
+	<br />
+	<ul>
+		<li><a href="todo/list.jsp">todo 할일 보기</a></li>
+	</ul>
+	
 </body>
 </html>
