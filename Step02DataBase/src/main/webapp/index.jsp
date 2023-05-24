@@ -19,6 +19,7 @@
 	<br />
 	<ul>
 		<li><a href="todo/list.jsp">todo 할일 보기</a></li>
+		<li><a href="guest/list.jsp">방명록 보기</a></li>
 	</ul>
 	
 </body>
