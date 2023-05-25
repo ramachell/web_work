@@ -3,16 +3,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
-// request 로 값 받아오기
-// int num = Integer.parseInt(request.getParameter("num"));
-// // getData()로 num에 해당하는 회원 GuestDto 가져와서 dto에 입력
-// GuestDto dto = GuestDao.getInstance().getData(num);
-
+// num 읽어오기
 int num = Integer.parseInt(request.getParameter("num"));
-//2. 번호를 이용해서 DB 에 저장된 수정할 회원의 정보를 얻어낸다.
+// dto dao이용해서 num에맞는 dto 가져오기
 GuestDto dto = GuestDao.getInstance().getData(num);
 
 %>
+
+
+
 <!DOCTYPE html>
 
 
