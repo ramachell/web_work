@@ -59,7 +59,9 @@
 				<tr>
 					<td><%=tmp.getNum()%></td>
 					<td><%=tmp.getWriter()%></td>
-					<td><%=tmp.getContent()%></td>
+					<td>
+						<textarea readonly class="form-control-plaintext" rows=3 cols=10><%=tmp.getContent() %> </textarea>
+					</td>
 					<td><%=tmp.getRegdate()%></td>
 					<td>
 						<a href="updateform.jsp?num=<%=tmp.getNum()%>">
