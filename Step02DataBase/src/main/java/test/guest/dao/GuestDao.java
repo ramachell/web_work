@@ -218,7 +218,7 @@ public class GuestDao {
 			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
 			conn = new DbcpBean().getconn();
 			// sql
-			String sql = "select * from board_guest order by num asc";
+			String sql = "select num,writer,content,pwd,to_char(regdate,'yy-mm-dd am hh:mi:ss')regdate from board_guest order by num asc";
 			pstmt = conn.prepareStatement(sql);
 			// ? 완성 (바인딩)
 
