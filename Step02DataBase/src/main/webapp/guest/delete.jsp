@@ -3,14 +3,17 @@
     pageEncoding="UTF-8"%>
 <%
 	int num = Integer.parseInt(request.getParameter("num"));
-	String Pwd = request.getParameter("pwd");
+	String pwd = request.getParameter("pwd");
 	boolean isSuc= false;
 	GuestDao dao = GuestDao.getInstance();
-	String dbPwd = dao.getData(num).getPwd();
+	if(dao.getData(num)!=null){
+		String dbPwd = dao.getData(num).getPwd();
 	
-	if(dbPwd.equals(Pwd)){
-		isSuc = dao.delete(num);
+		if(pwd.equals(dbPwd)){
+			isSuc = dao.delete(num);
+		}
 	}
+	
 	
 %>
 <!DOCTYPE html>
