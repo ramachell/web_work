@@ -6,24 +6,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 <title>/guest/insertform.jsp</title>
+<style>
+	.container{
+	
+	}
+</style>
 </head>
-<body>
-	<form action="insert.jsp" method="get">
-		<div class="mb-1">
-			<label class="form-lable" for="writer">이름</label>
-			<input class="form-control" type="text" name="writer" id="writer" placeholder="이름..." />
-		</div>
-		<div class="mb-1">
-			<label for="content" class="form-lable">내용</label>
-			<textarea name="content" id="content" cols="70" rows="1"></textarea>
-		</div>
-		<div>
-			<label for="pwd">비밀번호</label>
-			<input type="password" name="pwd" id="pwd" placeholder="비밀번호.."/>
-		</div>
-		<button type="submit" class="btn btn-success mt-5" style="margin-top: 10px">추가</button>
-	</form>
 
+<body>
+	<div class="container" style="margin-top:150px;">
+		<h1>방명록 작성하기</h1>
+		<form action="insert.jsp" method="get">
+			<div class="mb-1">
+				<label class="form-lable" for="writer">이름</label>
+				<input class="form-control" type="text" name="writer" id="writer" placeholder="이름..." />
+			</div>
+			<div class="mb-1">
+				<label for="content" class="form-lable">내용</label>
+				<textarea name="content" id="content" cols="70" rows="1" class="form-control"></textarea>
+			</div>
+			<div class="col-1">
+				<label for="pwd">비밀번호</label>
+				<input type="password" name="pwd" id="pwd" class="form-control" placeholder="비밀번호.."/>
+			</div>
+			<div class="mt-3">
+				<button type="submit" class="btn btn-success">방명록쓰기</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='list.jsp' ">다시 방명록으로</button>
+			</div>
+		</form>
+	</div>
 
 </body>
 </html>

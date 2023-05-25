@@ -10,19 +10,17 @@ String content = request.getParameter("content");
 String pwd = request.getParameter("pwd");
 
 
-// dto 객체 하나 만들기 + 생성자로 바로 데이터입력
+// dto 객체 하나 만들기 + setter 값입력
 GuestDto dto = new GuestDto();
 dto.setNum(num);
 dto.setWriter(writer);
 dto.setContent(content);
 // dao 객체 얻어오기
 GuestDao dao = GuestDao.getInstance();
-boolean isSuccess;
+boolean isSuccess = false;
 boolean pwdck = dao.getData(num).getPwd().equals(pwd);
 if (pwdck){
 isSuccess = dao.update(dto);
-} else {
-	isSuccess = false;
 }
 %>
 <!DOCTYPE html>
@@ -38,17 +36,17 @@ isSuccess = dao.update(dto);
 		<h1>알림</h1>
 		<%if(isSuccess){%>
 		<p class="alert alert-success">
-			<strong><%=num%></strong> 번 회원의 정보를 수정했습니다. <a href="list.jsp">목록보기</a>
+			<strong>방명록이 수정되었습니다.</strong>  <a href="list.jsp">방명록으로 돌아가기</a>
 		</p>
 		<%} else if(!pwdck){ %>
-		<p class="alert alert-success">
-			<strong></strong> 비밀번호가 틀렸습니다. <a href="list.jsp">목록보기</a>
+		<p class="alert alert-warning">
+			<strong>비밀번호가 틀렸습니다.</strong>  <a href="updateform.jsp?num=<%=num%>">다시 수정하러가기</a>
 		</p>
 		
 		
 		<%} else {%>
 		<p class="alert alert-warning">
-			수정실패! <a href="updateform.jsp?num=<%=num%>">다시 수정</a>
+			방명록 수정 실패 <a href="updateform.jsp?num=<%=num%>">다시 수정 하러가기</a>
 		</p>
 		<%}%>
 	</div>

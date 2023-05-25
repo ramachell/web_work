@@ -34,7 +34,7 @@
 		<table class="table table-primary">
 			<colgroup>
            		<col width="50">
-           	 	<col width="50">
+           	 	<col width="80">
            		<col width="500">
             	<col width="100">
             	<col width="50">

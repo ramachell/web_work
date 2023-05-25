@@ -24,22 +24,23 @@
 <body>
 	<% if(!isSuc) {%>
 	
-	
-	<form method = "post" action = "delete.jsp">
-		<input type = "hidden" name = "num" value = "<%=num %>">
-		<table>
-			<tr>
-				<td>비밀번호</td>
-				<td><input type = "password" name = "pwd"></td>
-				<td><input type = "submit" value = "확인"></td>
-			</tr>
-		</table>
-	</form>
+	<div class="container col-6 mt-5" >
+		<form method = "post" action = "delete.jsp">
+			<input type = "hidden" name = "num" value = "<%=num %>">
+			<table>
+				<tr>
+					<td>비밀번호</td>
+					<td><input type = "password" name = "pwd"></td>
+					<td><input type = "submit" value = "확인"></td>
+				</tr>
+			</table>
+		</form>
 	<% }%>
 	<% if(isSuc) {%>
-	<p>삭제가 완료되었습니다.</p>
+		<p>삭제가 완료되었습니다.</p>
 	<% }%>
 	<a href = "list.jsp">방명록으로 돌아가기</a>
+	</div>
 	
 </body>
 </html>

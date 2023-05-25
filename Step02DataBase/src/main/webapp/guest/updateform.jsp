@@ -22,32 +22,33 @@ GuestDto dto = GuestDao.getInstance().getData(num);
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>/guest/updateform.jsp</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
-	<div class="container">
+	<div class="container" style="margin-top:200px;">
 		<h1>방명록 수정</h1>
 		<form action="update.jsp" method="post">
 			<div class="mb-1">
-				<label for="num">번호</label>
-				<input type="text" id="num" name="num" value="<%=dto.getNum()%>" readonly />
+				<label for="num">글번호</label>
+				<input type="text" id="num" name="num" value="<%=dto.getNum()%>" readonly class="form-control-plaintext" />
 			</div>
 			<div class="mb-1">
 				<label for="writer">작성자</label>
-				<input type="text" id="writer" name="writer" value="<%=dto.getWriter()%>" />
+				<input type="text" id="writer" name="writer" class="form-control" value="<%=dto.getWriter()%>" />
 			</div>
 			<div class="mb-1">
 				<label for="content">글내용</label>
-				<textarea name="content" id="content" cols="70" rows="1" ><%=dto.getContent()%></textarea>
+				<textarea name="content" id="content" class="form-control" cols="70" rows="1" ><%=dto.getContent()%></textarea>
 			</div>
-			<div class="mb-1">
+			<div class="mb-1 col-1">
 				<label for="pwd">비밀번호</label>
-				<input type="text" id="pwd" name="pwd" />
+				<input type="password" id="pwd" name="pwd" class="form-control" />
 			</div>
-			<div>
+			<div class="mb-3">
 				<label for="regdate">글 작성날짜 <%=dto.getRegdate()%></label>
 			</div>
 			<button type="submit" class="btn btn-primary">수정</button>
-			<button type="reset" class="btn btn-warning">취소</button>
+			<button type="button" class="btn btn-secondary" onclick="location.href='list.jsp' ">다시 방명록으로</button>
 		</form>
 	</div>
 
