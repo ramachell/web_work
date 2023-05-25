@@ -128,7 +128,7 @@ public class GuestDao {
 
 	// 회원 정보 1개 삭제하는 메소드
 
-	public boolean delete(int num) {
+	public boolean delete(GuestDto dto) {
 		// 필요한 객체 참조값 담을 지역변수 미리
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -137,10 +137,11 @@ public class GuestDao {
 			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
 			conn = new DbcpBean().getconn();
 			// sql
-			String sql = "delete from board_guest where num = ?";
+			String sql = "delete from board_guest where num = ? and pwd = ?";
 			pstmt = conn.prepareStatement(sql);
 			// ? 완성 (바인딩)
-			pstmt.setInt(1, num);
+			pstmt.setInt(1, dto.getNum());
+			pstmt.setString(2, dto.getPwd());
 			rowCount = pstmt.executeUpdate();
 			// sql 수행한 결과값
 
