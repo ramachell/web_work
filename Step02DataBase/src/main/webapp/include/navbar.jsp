@@ -19,7 +19,7 @@
 			String current = request.getParameter("current"); // index or member or guest 
 		%>
 		<div class="collapse navbar-collapse" id="navbarText">
-			<ul class="navbar-nav">
+			<ul class="navbar-nav me-auto">
 				<li class="nav-item">
 					<a class="nav-link <% if(current.equals("member")) out.print("active"); %>" href="${pageContext.request.contextPath}/member/list.jsp">회원목록</a>
 				</li>
@@ -27,6 +27,13 @@
 					<a class="nav-link <% if(current.equals("guest")) out.print("active"); %>" href="${pageContext.request.contextPath}/guest/list.jsp">방명록</a>
 				</li>
 			</ul>
+			<form class="d-flex">
+				<input class="form-control me-2" type="search" placeholder="Search"/>
+				<button class="btn btn-info me-2" type="submit">Search</button>
+			</form>
+			<span class="navbar-text">
+				Made by ramacheel
+			</span>
 		</div>
 	</div>
 </nav>

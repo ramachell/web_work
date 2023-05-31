@@ -24,19 +24,9 @@
 		<ul>
 			<li><a href="${pageContext.request.contextPath }/member/list.jsp">회원 목록보기</a></li>
 			<li><a href="${pageContext.request.contextPath }/guest/list.jsp">방명록 목록보기</a></li>
-			<input type="text" id="inp2" />
 		</ul>
 	</div>
-	<script>
-	
-	document.querySelector("#inp2").addEventListener("keydown",(e) =>{
-		console.log(e.key);
-		if(e.key=="Enter"){
-			console.log("엔터눌림");
-			location.href="${pageContext.request.contextPath}/guest/list.jsp"
-		}
-	})
-	</script>
+
 </body>
 </html>
 
