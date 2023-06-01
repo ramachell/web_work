@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%
+	// get 방식으로 들어온 파라미터 url이 있다면
+	String url = request.getParameter("url");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +18,7 @@
 	<div class="container">
 		<h1>로그인 폼</h1>
 		<form action="login.jsp" method="post">
+			<input type="hidden" name="url" value="<%=url%>" />
 			<div>
 				<label class="form-label" for="id">아이디</label>
 				<input class="form-control" type="text" name="id" id="id" />
