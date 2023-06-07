@@ -1,3 +1,4 @@
+<%@page import="java.io.File"%>
 <%@page import="test.file.dao.FileDao"%>
 <%@page import="test.file.dto.FileDto"%>
 <%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
@@ -7,8 +8,14 @@
     
 <%	
 
-	// 파일 시스템 상에서 webapp 의 upload 폴더 까지의 절대경로를 얻어냄
-	String realPath = application.getRealPath("/upload");
+
+	//파일 시스템 상에서 webapp 의 upload 폴더 까지의 절대경로를 얻어낸다.
+	String realPath=application.getRealPath("/upload");
+	//해당 경로를 access 할수 있는 파일 객체 생성
+	File f=new File(realPath);
+	if(!f.exists()){ //만일  폴더가 존재 하지 않으면
+		f.mkdir(); //upload 폴더 만들기
+	}
 	
 	
 	MultipartRequest mr = new MultipartRequest(request, // 내부적으로 필요한 request 객체 전달
@@ -59,8 +66,9 @@
 		</p>
 		<% } else {%>
 		<p>
-			업로드 실패
-			
+
+			업로드 실패!
+			<a href="upload_form.jsp">다시 시도</a>			
 		</p>
 		<%} %>
 </body>

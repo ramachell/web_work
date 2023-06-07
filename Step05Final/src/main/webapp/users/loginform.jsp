@@ -4,6 +4,13 @@
 <%
 	// get 방식으로 들어온 파라미터 url이 있다면
 	String url = request.getParameter("url");
+
+	// 로그인된 정보 없다면
+	if(url==null){
+		// url에 index.jsp 넣어줌 
+		String cPath=request.getContextPath();
+		url=cPath+"/index.jsp";
+}	
 %>
 <!DOCTYPE html>
 <html>

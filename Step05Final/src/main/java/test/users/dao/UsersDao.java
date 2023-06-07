@@ -23,6 +23,133 @@ public class UsersDao {
 
 	}
 
+	// 비밀번호 변경
+	public boolean updatePwd(UsersDto dto) {
+		// 필요한 객체 참조값 담을 지역변수 미리
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int rowCount = 0;
+		try {
+			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
+			conn = new DbcpBean().getConn();
+			// sql
+			String sql = "update users set pwd = ? where id = ?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 완성 (바인딩)
+			pstmt.setString(1, dto.getPwd());
+			pstmt.setString(2, dto.getId());
+			rowCount = pstmt.executeUpdate();
+			// sql 수행한 결과값
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+			}
+		}
+		if (rowCount > 0) {
+			return true;
+		} else {// 그렇지 않으면 작업 실패
+			return false;
+		}
+
+	}
+
+	// 프로필 이미지 경로를 수정하는 메소드
+	public boolean updateProfile(UsersDto dto) {
+		// 필요한 객체 참조값 담을 지역변수 미리
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int rowCount = 0;
+		try {
+			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
+			conn = new DbcpBean().getConn();
+			// sql
+			String sql = "update users set proFile = ? where id = ?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 완성 (바인딩)
+			pstmt.setString(1, dto.getProfile());
+			pstmt.setString(2, dto.getId());
+			rowCount = pstmt.executeUpdate();
+			// sql 수행한 결과값
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+			}
+		}
+		if (rowCount > 0) {
+			return true;
+		} else {// 그렇지 않으면 작업 실패
+			return false;
+		}
+
+	}
+
+	// id에 따라 dto 반환해주는 메소드
+	public UsersDto getData(String id) {
+
+		// 필요한 객체 참조값 담을 지역변수 미리
+		UsersDto dto = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
+			conn = new DbcpBean().getConn();
+			// sql
+			String sql = "select pwd, email, profile, regdate from users where id = ?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 완성 (바인딩)
+			pstmt.setString(1, id);
+			// sql 수행한 결과값
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				dto = new UsersDto();
+				dto.setId(id);
+				dto.setPwd(rs.getString("pwd"));
+				dto.setEmail(rs.getString("email"));
+				dto.setProfile(rs.getString("profile"));
+				dto.setRegdate(rs.getString("regdate"));
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+			}
+		}
+
+		return dto;
+	}
+
 	// insert
 
 	public boolean insert(UsersDto dto) {

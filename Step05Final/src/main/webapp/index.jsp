@@ -21,7 +21,7 @@
 	<div class="container">
 		<%if(id!=null) {%>
 			<p>
-				<strong><%=id %></strong>님 로그인 되어있습니다.
+				<a href="users/private/info.jsp"><strong><%=id %></strong></a>님 로그인 되어있습니다.
 				<a href="${pageContext.request.contextPath}/users/logout.jsp">로그아웃</a>
 			</p>
 		<%} %>

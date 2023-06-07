@@ -25,6 +25,89 @@ public class FileDao {
 		return dao;
 	}
 
+	public boolean delete(int num) {
+		// 필요한 객체 참조값 담을 지역변수 미리
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int rowCount = 0;
+		try {
+			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
+			conn = new DbcpBean().getConn();
+			// sql
+			String sql = "delete from board_file where num = ?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 완성 (바인딩)
+			pstmt.setInt(1, num);
+			rowCount = pstmt.executeUpdate();
+			// sql 수행한 결과값
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+			}
+		}
+		if (rowCount > 0) {
+			return true;
+		} else {// 그렇지 않으면 작업 실패
+			return false;
+		}
+	}
+
+	public FileDto getData(int num) {
+		// 필요한 객체 참조값 담을 지역변수 미리
+		FileDto dto = new FileDto();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
+			conn = new DbcpBean().getConn();
+			// sql
+			String sql = "select writer, title, orgFileName, saveFileName, fileSize, regdate from board_file where num = ?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 완성 (바인딩)
+			pstmt.setInt(1, num);
+			// sql 수행한 결과값
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				dto.setNum(num);
+				dto.setWriter(rs.getString("writer"));
+				dto.setTitle(rs.getString("title"));
+				dto.setOrgFileName(rs.getString("orgFileName"));
+				dto.setSaveFileName(rs.getString("saveFileName"));
+				dto.setFileSize(rs.getLong("fileSize"));
+				dto.setRegdate(rs.getString("regdate"));
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+			}
+		}
+		return dto;
+	}
+
 	// 업로드된 파일 정보를 DB 에 저장하는 메소드
 	public boolean insert(FileDto dto) {
 		Connection conn = null;
@@ -85,7 +168,7 @@ public class FileDao {
 				dto.setWriter(rs.getString("writer"));
 				dto.setTitle(rs.getString("title"));
 				dto.setOrgFileName(rs.getString("orgfilename"));
-				dto.setFileSize(rs.getLong("filesize") / 1024);
+				dto.setFileSize(rs.getLong("filesize"));
 				dto.setRegdate(rs.getString("regdate"));
 				list.add(dto);
 			}

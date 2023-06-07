@@ -5,6 +5,7 @@
 
 <%
 	List<FileDto> list = FileDao.getInstance().getList();
+	String id = (String) session.getAttribute("id");
 %>
 <!DOCTYPE html>
 <html>
@@ -18,6 +19,8 @@
 
 	<div class="container col-9">
 		<a href="${pageContext.request.contextPath}/file/private/upload_form.jsp">업로드 하기</a>
+		<br />
+		<a href="${pageContext.request.contextPath}/file/private/upload_form2.jsp">업로드 하기</a>
 		<h1>자료실 목록입니다.</h1>
 		<table class="table table-striped">
 			<thead>
@@ -37,9 +40,23 @@
 					<td><%=tmp.getNum() %></td>
 					<td><%=tmp.getWriter() %></td>
 					<td><%=tmp.getTitle() %></td>
-					<td><%=tmp.getOrgFileName() %></td>
-					<td><%=tmp.getFileSize() %></td>
+					<td><a href="download.jsp?num=<%=tmp.getNum()%>"><%=tmp.getOrgFileName() %></a></td>
+					<td><%
+					if(tmp.getFileSize() < 1024){
+						out.print(tmp.getFileSize() + " B");
+					} else if (tmp.getFileSize() < 1024*1024 ){
+						out.print(tmp.getFileSize()/(double)1024 + " KB");						
+					} else {
+						out.print(tmp.getFileSize()/(double)1024/1024 + " MB");
+					}
+					%></td>
 					<td><%=tmp.getRegdate() %></td>
+					<td>
+						<%-- 작성자와 아이디가 같을때만 삭제 링크출력 --%>
+						<%if (tmp.getWriter().equals(id)) {%>
+							<a href="delete.jsp?num=<%=tmp.getNum() %>">삭제</a>
+						<%} %>
+					</td>
 				</tr>
 			<% }%>
 			</tbody>
