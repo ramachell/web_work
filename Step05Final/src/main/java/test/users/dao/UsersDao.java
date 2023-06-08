@@ -23,6 +23,45 @@ public class UsersDao {
 
 	}
 
+	// update id일치할때 email profile 수정
+	public boolean update(UsersDto dto) {
+		// 필요한 객체 참조값 담을 지역변수 미리
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int rowCount = 0;
+		try {
+			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
+			conn = new DbcpBean().getConn();
+			// sql
+			String sql = "update users set email = ? , profile = ? where id = ?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 완성 (바인딩)
+			pstmt.setString(1, dto.getEmail());
+			pstmt.setString(2, dto.getProfile());
+			pstmt.setString(3, dto.getId());
+			rowCount = pstmt.executeUpdate();
+			// sql 수행한 결과값
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+			}
+		}
+		if (rowCount > 0) {
+			return true;
+		} else {// 그렇지 않으면 작업 실패
+			return false;
+		}
+	}
+
 	// 비밀번호 변경
 	public boolean updatePwd(UsersDto dto) {
 		// 필요한 객체 참조값 담을 지역변수 미리

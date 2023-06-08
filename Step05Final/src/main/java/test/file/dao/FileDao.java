@@ -17,6 +17,58 @@ public class FileDao {
 	private FileDao() {
 	}
 
+	// getList 페이지 ver
+
+	public List<FileDto> getList2(int a, int b) {
+		// 필요한 객체 참조값 담을 지역변수 미리
+		List<FileDto> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
+			conn = new DbcpBean().getConn();
+			// sql
+			String sql = "select * from (select rs1.*,rownum as rn from (select num,writer,title,orgFileName,fileSize,regdate from board_file order by num desc) rs1) where rn between ? and ?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 완성 (바인딩)
+			pstmt.setInt(1, a * b - a + 1);
+			pstmt.setInt(2, a * b);
+			// sql 수행한 결과값
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				FileDto dto = new FileDto();
+				dto.setNum(rs.getInt("num"));
+				dto.setWriter(rs.getString("writer"));
+				dto.setTitle(rs.getString("title"));
+				dto.setOrgFileName(rs.getString("orgfilename"));
+				dto.setFileSize(rs.getLong("filesize"));
+				dto.setRegdate(rs.getString("regdate"));
+				list.add(dto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+			}
+		}
+
+		return list;
+
+	}
+
 	// 자신의 참조값을 리턴해주는 메소드
 	public static FileDao getInstance() {
 		if (dao == null) {

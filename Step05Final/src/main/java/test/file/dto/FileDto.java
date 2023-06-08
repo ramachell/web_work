@@ -2,6 +2,7 @@ package test.file.dto;
 
 public class FileDto {
 
+	private int rn;
 	private int num;
 	private String writer;
 	private String title;
@@ -14,9 +15,10 @@ public class FileDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FileDto(int num, String writer, String title, String orgFileName, String saveFileName, long fileSize,
+	public FileDto(int rn, int num, String writer, String title, String orgFileName, String saveFileName, long fileSize,
 			String regdate) {
 		super();
+		this.rn = rn;
 		this.num = num;
 		this.writer = writer;
 		this.title = title;
@@ -24,6 +26,14 @@ public class FileDto {
 		this.saveFileName = saveFileName;
 		this.fileSize = fileSize;
 		this.regdate = regdate;
+	}
+
+	public int getRn() {
+		return rn;
+	}
+
+	public void setRn(int rn) {
+		this.rn = rn;
 	}
 
 	public int getNum() {

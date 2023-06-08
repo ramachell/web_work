@@ -28,7 +28,7 @@
 			
 		-->
 		
-		<form action="upload.jsp" method="post" enctype="multipart/form-data">
+		<form action="upload2.jsp" method="post" enctype="multipart/form-data" id="myForm">
 			<div>
 				<label for="title">제목</label>
 				<input type="text" name="title" id="title" />
@@ -42,7 +42,37 @@
 	</div>
 	<script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 	<script>
+		// submit 이벤트리스너
+		document.querySelector("#myForm").addEventListener("submit", e=>{
+			// 기본 동작 막고
+			e.preventDefault();
+			// 폼전송을 직접 js로 만들기
+			// 폼 데이터를 담는다
+			let data = new FormData(e.target);
+			
+// 			// fetch로 보내기
+// 			fetch("upload2.jsp",{
+// 				method : "post",
+// 				body : data
+// 			})
+// 			.then(res=>res.text())
+// 			.then(data=>{
+// 				//data는 upload2.jsp가 응답한 문자열임 위에서의 data랑 전혀 다른거
+// 				const data2 = JSON.parse(data);
+				
+// 			}))
+			
+			// gura util 사용하기
 	
+			ajaxFormPromise(e.target)
+			.then(res=>res.json())
+			.then((data)=>{
+				//data object 이다 
+				console.log(data);
+			});
+		
+			
+		})
 	</script>
 </body>
 </html>
