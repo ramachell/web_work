@@ -1,114 +1,131 @@
-package test.file.dao;
+package test.cafe.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import test.file.dto.FileDto;
+import test.cafe.dto.CafeDto;
 import test.util.DbcpBean;
 
-public class FileDao {
-	// static 필드
-	private static FileDao dao;
+public class CafeDao {
 
-	// 외부에서 객체 생성하지 못하도록 생성자를 private 로
-	private FileDao() {
+	private static CafeDao dao;
+
+	public static CafeDao getInstance() {
+		if (dao == null) {
+			dao = new CafeDao();
+		}
+		return dao;
 	}
 
-	// 전체 글 갯수 몇갠지
-	public int getCount() {
-		int count = 0;
+	public void addViewCount(int num) {
 		// 필요한 객체 참조값 담을 지역변수 미리
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		int rowCount = 0;
 		try {
 			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
 			conn = new DbcpBean().getConn();
 			// sql
-			String sql = "select max(rownum) as mr from board_file";
+			String sql = "update board_cafe set viewCount=viewCount+1 where num = ?";
 			pstmt = conn.prepareStatement(sql);
 			// ? 완성 (바인딩)
-
+			pstmt.setInt(1, num);
+			rowCount = pstmt.executeUpdate();
 			// sql 수행한 결과값
-			rs = pstmt.executeQuery();
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+			}
+		}
+
+	}
+
+	public boolean update(CafeDto dto) {
+		// 필요한 객체 참조값 담을 지역변수 미리
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int rowCount = 0;
+		try {
+			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
+			conn = new DbcpBean().getConn();
+			// sql
+			String sql = "update board_cafe set title=? , content= ? where num = ?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 완성 (바인딩)
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setInt(3, dto.getNum());
+			rowCount = pstmt.executeUpdate();
+			// sql 수행한 결과값
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+			}
+		}
+		if (rowCount > 0) {
+			return true;
+		} else {// 그렇지 않으면 작업 실패
+			return false;
+		}
+	}
+
+	public int getCount() {
+		// 글의 갯수를 담을 지역변수
+		int count = 0;
+		// 필요한 객체의 참조값을 담을 지역변수 미리 만들기
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// DbcpBean 객체를 이용해서 Connection 객체를 얻어온다(Connection Pool 에서 얻어오기)
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문
+			String sql = "select max(rownum) as mr from board_cafe";
+			pstmt = conn.prepareStatement(sql);
+			// sql 문이 미완성이라면 여기서 완성
+
+			// select 문 수행하고 결과값 받아오기
+			rs = pstmt.executeQuery();
+			// 반복문 돌면서 ResultSet 에 담긴 내용 추출
 			while (rs.next()) {
 				count = rs.getInt("mr");
 			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException se) {
+			se.printStackTrace();
 		} finally {
 			try {
-				if (rs != null) {
+				if (rs != null)
 					rs.close();
-				}
-				if (pstmt != null) {
+				if (pstmt != null)
 					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
+				if (conn != null)
+					conn.close(); // Connection 이 Connection Pool 에 반납된다.
 			} catch (Exception e) {
 			}
 		}
-
 		return count;
-
-	}
-
-	// getList 페이지 ver
-	public List<FileDto> getList2(int row, int pageNum) {
-		// 필요한 객체 참조값 담을 지역변수 미리
-		List<FileDto> list = new ArrayList<>();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
-			conn = new DbcpBean().getConn();
-			// sql
-			String sql = "select * from (select rs1.*,rownum as rn from (select num,writer,title,orgFileName,fileSize,regdate from board_file order by num desc) rs1) where rn between ? and ?";
-			pstmt = conn.prepareStatement(sql);
-			// ? 완성 (바인딩)
-			pstmt.setInt(1, row * pageNum - row + 1);
-			pstmt.setInt(2, row * pageNum);
-			// sql 수행한 결과값
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				FileDto dto = new FileDto();
-				dto.setNum(rs.getInt("num"));
-				dto.setWriter(rs.getString("writer"));
-				dto.setTitle(rs.getString("title"));
-				dto.setOrgFileName(rs.getString("orgfilename"));
-				dto.setFileSize(rs.getLong("filesize"));
-				dto.setRegdate(rs.getString("regdate"));
-				list.add(dto);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception e) {
-			}
-		}
-
-		return list;
-
 	}
 
 	public boolean delete(int num) {
@@ -120,7 +137,7 @@ public class FileDao {
 			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
 			conn = new DbcpBean().getConn();
 			// sql
-			String sql = "delete from board_file where num = ?";
+			String sql = "delete from board_cafe where num = ?";
 			pstmt = conn.prepareStatement(sql);
 			// ? 완성 (바인딩)
 			pstmt.setInt(1, num);
@@ -147,9 +164,9 @@ public class FileDao {
 		}
 	}
 
-	public FileDto getData(int num) {
+	public CafeDto getData(int num) {
 		// 필요한 객체 참조값 담을 지역변수 미리
-		FileDto dto = new FileDto();
+		CafeDto dto = new CafeDto();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -157,7 +174,7 @@ public class FileDao {
 			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
 			conn = new DbcpBean().getConn();
 			// sql
-			String sql = "select writer, title, orgFileName, saveFileName, fileSize, regdate from board_file where num = ?";
+			String sql = "select writer, title, content, viewCount, regdate from board_cafe where num = ?";
 			pstmt = conn.prepareStatement(sql);
 			// ? 완성 (바인딩)
 			pstmt.setInt(1, num);
@@ -168,9 +185,8 @@ public class FileDao {
 				dto.setNum(num);
 				dto.setWriter(rs.getString("writer"));
 				dto.setTitle(rs.getString("title"));
-				dto.setOrgFileName(rs.getString("orgFileName"));
-				dto.setSaveFileName(rs.getString("saveFileName"));
-				dto.setFileSize(rs.getLong("fileSize"));
+				dto.setContent(rs.getString("content"));
+				dto.setViewCount(rs.getInt("viewCount"));
 				dto.setRegdate(rs.getString("regdate"));
 
 			}
@@ -195,22 +211,18 @@ public class FileDao {
 	}
 
 	// 업로드된 파일 정보를 DB 에 저장하는 메소드
-	public boolean insert(FileDto dto) {
+	public boolean insert(CafeDto dto) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		int rowCount = 0;
 		try {
 			conn = new DbcpBean().getConn();
-			String sql = "INSERT INTO board_file"
-					+ " (num, writer, title, orgFileName, saveFileName, fileSize, regdate)"
-					+ " VALUES(board_file_seq.NEXTVAL, ?, ?, ?, ?, ?, SYSDATE)";
+			String sql = "INSERT INTO board_cafe (num, writer, title, content, viewCount, regdate) VALUES(board_cafe_seq.NEXTVAL, ?, ?, ?, 0, SYSDATE)";
 			pstmt = conn.prepareStatement(sql);
 			// ? 에 바인딩할게 있으면 해주고
 			pstmt.setString(1, dto.getWriter());
 			pstmt.setString(2, dto.getTitle());
-			pstmt.setString(3, dto.getOrgFileName());
-			pstmt.setString(4, dto.getSaveFileName());
-			pstmt.setLong(5, dto.getFileSize());
+			pstmt.setString(3, dto.getContent());
 			// INSERT OR UPDATE OR DELETE 문을 수행하고 수정되거나, 삭제되거나, 추가된 ROW 의 갯수 리턴 받기
 			rowCount = pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -231,9 +243,9 @@ public class FileDao {
 		}
 	}
 
-	public List<FileDto> getList() {
+	public List<CafeDto> getList(CafeDto dto2) {
 		// 필요한 객체 참조값 담을 지역변수 미리
-		List<FileDto> list = new ArrayList<>();
+		List<CafeDto> list = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -241,20 +253,22 @@ public class FileDao {
 			// DbcpBean 객체 이용해서 Connection 객체 얻어오기 (pool에서)
 			conn = new DbcpBean().getConn();
 			// sql
-			String sql = "select num,writer,title,orgfilename,filesize,regdate from board_file order by num";
+			String sql = "select * from (select rs1.*,rownum as rn from (select num,writer,title,content,viewCount,regdate from board_cafe order by num desc) rs1) where rn between ? and ?";
 			pstmt = conn.prepareStatement(sql);
 			// ? 완성 (바인딩)
+			pstmt.setInt(1, dto2.getStartRowNum());
+			pstmt.setInt(2, dto2.getEndRowNum());
 
 			// sql 수행한 결과값
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				FileDto dto = new FileDto();
+				CafeDto dto = new CafeDto();
 				dto.setNum(rs.getInt("num"));
 				dto.setWriter(rs.getString("writer"));
 				dto.setTitle(rs.getString("title"));
-				dto.setOrgFileName(rs.getString("orgfilename"));
-				dto.setFileSize(rs.getLong("filesize"));
+				dto.setContent(rs.getString("content"));
+				dto.setViewCount(rs.getInt("vieWcount"));
 				dto.setRegdate(rs.getString("regdate"));
 				list.add(dto);
 			}
@@ -278,13 +292,4 @@ public class FileDao {
 
 		return list;
 	}
-
-	// 자신의 참조값을 리턴해주는 메소드
-	public static FileDao getInstance() {
-		if (dao == null) {
-			dao = new FileDao();
-		}
-		return dao;
-	}
-
 }

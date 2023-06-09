@@ -23,7 +23,13 @@
 	List<FileDto> list = FileDao.getInstance().getList2(row,pageNum2);
 	String id = (String) session.getAttribute("id");
 	// 페이지 10단위용 변수
-	int pageNum = (pageNum2-1)/10;
+	int pageNum = (pageNum2-1)/10+1;
+	// 마지막 글수가 몇인지
+	int count = FileDao.getInstance().getCount();
+	
+	// 종료페이지 (10개단위) 
+	int endRowNum = (int)Math.ceil((double)count/row);
+
 %>
 <!DOCTYPE html>
 <html>
@@ -40,6 +46,9 @@
 		<br />
 		<a href="${pageContext.request.contextPath}/file/private/upload_form2.jsp">ajax  업로드 하기</a>
 		<h1>자료실 목록입니다.</h1>
+		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum2 %>&row=1">1개씩보기</a>
+		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum2 %>&row=3">3개씩보기</a>
+		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum2 %>&row=5">5개씩보기</a>
 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum2 %>&row=10">10개씩보기</a>
 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum2 %>&row=15">15개씩보기</a>
 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum2 %>&row=20">20개씩보기</a>
@@ -82,24 +91,36 @@
 			<% }%>
 			</tbody>
 		</table>
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=1&row=<%=row%>">1페이지로</a>
-		<%if (pageNum!=0){ %>
 		
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum2-10%>&row=<%=row%>"><</a>
+		<ul class="pagination">
+			<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=1&row=<%=row%>">1페이지로</a></li>
+		<%if (pageNum!=1){ %>
+			<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum2-10%>&row=<%=row%>"><</a></li>
 		<%} %>
-		
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+1 %>&row=<%=row%>"><%=pageNum*10+1 %></a>
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+2 %>&row=<%=row%>"><%=pageNum*10+2 %></a>
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+3 %>&row=<%=row%>"><%=pageNum*10+3 %></a>
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+4 %>&row=<%=row%>"><%=pageNum*10+4 %></a>
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+5 %>&row=<%=row%>"><%=pageNum*10+5 %></a>
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+6 %>&row=<%=row%>"><%=pageNum*10+6 %></a>
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+7 %>&row=<%=row%>"><%=pageNum*10+7 %></a>
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+8 %>&row=<%=row%>"><%=pageNum*10+8 %></a>
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+9 %>&row=<%=row%>"><%=pageNum*10+9 %></a>
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+10 %>&row=<%=row%>"><%=pageNum*10+10 %></a>
+		<%for(int i = pageNum*10-9 ; i <= pageNum*10 ; i++) {%>
+			<%if( endRowNum >= i ) {%>
+				<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=i %>&row=<%=row%>"><%=i %></a></li>
+				<%} %>
+			
+		<%} %>
+			<%if(pageNum*10*row < count){%>
+			
+			<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum2+10%>&row=<%=row%>">></a></li>
+			<%} %>
+		</ul>	
+			
+<%-- 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+1 %>&row=<%=row%>"><%=pageNum*10+1 %></a> --%>
+<%-- 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+2 %>&row=<%=row%>"><%=pageNum*10+2 %></a> --%>
+<%-- 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+3 %>&row=<%=row%>"><%=pageNum*10+3 %></a> --%>
+<%-- 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+4 %>&row=<%=row%>"><%=pageNum*10+4 %></a> --%>
+<%-- 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+5 %>&row=<%=row%>"><%=pageNum*10+5 %></a> --%>
+<%-- 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+6 %>&row=<%=row%>"><%=pageNum*10+6 %></a> --%>
+<%-- 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+7 %>&row=<%=row%>"><%=pageNum*10+7 %></a> --%>
+<%-- 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+8 %>&row=<%=row%>"><%=pageNum*10+8 %></a> --%>
+<%-- 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+9 %>&row=<%=row%>"><%=pageNum*10+9 %></a> --%>
+<%-- 		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum*10+10 %>&row=<%=row%>"><%=pageNum*10+10 %></a> --%>
 		 
-		<a href="${pageContext.request.contextPath}/file/list.jsp?pageNum2=<%=pageNum2+10%>&row=<%=row%>">></a>
+		
 	</div>
 </body>
 </html>
