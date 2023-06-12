@@ -3,10 +3,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	int num = Integer.parseInt(request.getParameter("num"));
-	
+	CafeDao.getInstance().addViewCount(num);
 	CafeDto dto = CafeDao.getInstance().getData(num);
 	
-	CafeDao.getInstance().addViewCount(num);
+	
 	
 	
 	
@@ -17,6 +17,11 @@
 <meta charset="UTF-8">
 <title>/cafe/detail.jsp</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+	.text1{
+		border: solid 2px black;
+	}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -27,7 +32,7 @@
 			<p>조회수 : <%=dto.getViewCount() %></p>
 		</div>
 		<br />
-		<div>
+		<div class="text1">
 			<p><strong>글 내용</strong></p>
 			<p><%= dto.getContent() %></p>
 		</div>

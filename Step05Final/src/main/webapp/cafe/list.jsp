@@ -95,7 +95,7 @@
 					<td><%=tmp.getViewCount() %></td>
 					<td><%=tmp.getRegdate() %></td>
 					<td>
-						<%-- 글작성자와 로그인된 아이디와 같을때만 삭제 링크 출력하기 --%>
+						<%-- Writer == id 일때만 수정 삭제 --%>
 						<%if(tmp.getWriter().equals(id)){ %>							
 							<a href="private/updateform.jsp?num=<%=tmp.getNum() %>">수정</a>
 							<a href="private/delete.jsp?num=<%=tmp.getNum() %>">삭제</a>

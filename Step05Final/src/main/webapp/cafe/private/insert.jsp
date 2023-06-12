@@ -10,7 +10,7 @@
 	
 	boolean isSuccess = false;
 	
-	if(content != null && title != null){
+	if(content !="" && title != ""){
 	CafeDto dto = new CafeDto();
 	dto.setTitle(title);
 	dto.setWriter(writer);
@@ -41,5 +41,10 @@
 			<a href="insertform.jsp">다시 쓰기</a>
 		</p>
 	<%} %>
+	
+	<script>
+		console.log("<%=content %>");
+		console.log("<%=title%>")
+	</script>
 </body>
 </html>

@@ -15,8 +15,32 @@
 		// 메소드 끝내기
 		return;
 	}
-	CafeDao.getInstance().delete(num);
 	
-	String cPath = request.getContextPath();
-	response.sendRedirect(cPath+"/cafe/list.jsp");
+	
+	
 %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>/cafe/private/delete.jsp</title>
+</head>
+<body>
+	<script>
+		const isconfirm = confirm("삭제하시겠습니까");
+		
+		
+   
+   
+   		<%CafeDao.getInstance().delete(num);
+		String cPath = request.getContextPath();
+		response.sendRedirect(cPath+"/cafe/list.jsp");%>
+	 
+   
+   
+   </script>
+</body>
+</html>
+
+
+

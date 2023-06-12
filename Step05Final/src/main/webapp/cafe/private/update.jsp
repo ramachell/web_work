@@ -2,15 +2,22 @@
 <%@page import="test.cafe.dto.CafeDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<jsp:useBean id="dto" class="test.cafe.dto.CafeDto"></jsp:useBean>
+<jsp:setProperty property="num" name="dto"/>
+<jsp:setProperty property="title" name="dto"/>
+<jsp:setProperty property="content" name="dto"/>
+
 <%
-	int num = Integer.parseInt(request.getParameter("num"));
-	String title = request.getParameter("title");
-	String content = request.getParameter("content");
+	// jsp useBean setProperty가 해당작업 다 대신해줌
 	
-	CafeDto dto = new CafeDto();
-	dto.setNum(num);
-	dto.setTitle(title);
-	dto.setContent(content);
+// 	int num = Integer.parseInt(request.getParameter("num"));
+// 	String title = request.getParameter("title");
+// 	String content = request.getParameter("content");
+	
+// 	dto = new CafeDto();
+// 	dto.setNum(num);
+// 	dto.setTitle(title);
+// 	dto.setContent(content);
 	boolean isSuccess = CafeDao.getInstance().update(dto);
 %>    
     
@@ -31,7 +38,7 @@
    <%}else{ %>
       <p>
          글 수정에 실패하였습니다
-         <a href="${pageContext.request.contextPath }/cafe/private/updateform.jsp?num=<%=num%>">다시 시도</a>
+         <a href="${pageContext.request.contextPath }/cafe/private/updateform.jsp?num=<%=dto.getNum()%>">다시 시도</a>
       </p>
    <%} %>
 </div>
