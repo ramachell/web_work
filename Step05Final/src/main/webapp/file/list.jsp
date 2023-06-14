@@ -40,7 +40,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-
+	<jsp:include page="/include/navbar.jsp">
+		<jsp:param value="file" name="current"/>
+	</jsp:include>
 	<div class="container col-9">
 		<a href="${pageContext.request.contextPath}/file/private/upload_form.jsp">업로드 하기</a>
 		<br />

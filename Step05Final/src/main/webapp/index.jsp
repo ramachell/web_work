@@ -1,11 +1,12 @@
 <%@page import="javax.websocket.Session"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	//session scope에 "id"라는 키값으로 저장된거 있는지 확인
-	String id = (String) session.getAttribute("id");
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%-- <% --%>
+<!--  	//session scope에 "id"라는 키값으로 저장된거 있는지 확인 -->
+<!--  	String id = (String) session.getAttribute("id"); -->
 
-%>
+<%-- %> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,13 +19,26 @@
 
 </head>
 <body>
+	<jsp:include page="/include/navbar.jsp">
+		<jsp:param value="index" name="current"/>
+	</jsp:include>
 	<div class="container">
-		<%if(id!=null) {%>
-			<p>
-				<a href="users/private/info.jsp"><strong><%=id %></strong></a>님 로그인 되어있습니다.
-				<a href="${pageContext.request.contextPath}/users/logout.jsp">로그아웃</a>
-			</p>
-		<%} %>
+		<%--
+			-- jstl 사용--
+			<c:if test="${not empty id  }">
+				<p>
+					<a href="users/private/info.jsp"><strong>${id }</strong></a>님 로그인 되어있습니다. 
+					<a href="${pageContext.request.contextPath}/users/logout.jsp">로그아웃</a>
+				</p>
+			</c:if>
+			-- <%%> 사용 --
+			<%if(id!=null) {%>
+				<p>
+					<a href="users/private/info.jsp"><strong><%=id %></strong></a>님 로그인 되어있습니다.
+					<a href="${pageContext.request.contextPath}/users/logout.jsp">로그아웃</a>
+				</p>
+			<%} %>
+		--%>
 		<h1>목록</h1>
 		<ul>
 			<li><a href="${pageContext.request.contextPath}/users/signup_form.jsp">회원가입 하러가기</a></li>

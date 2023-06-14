@@ -64,6 +64,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+	<jsp:include page="/include/navbar.jsp">
+		<jsp:param value="cafe" name="current"/>
+	</jsp:include>
 	<div class="container">
 		<a href="${pageContext.request.contextPath}/index.jsp">젤 처음으로</a>
 		<h1>게시글 목록 입니다</h1>

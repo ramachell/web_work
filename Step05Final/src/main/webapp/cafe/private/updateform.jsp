@@ -27,31 +27,32 @@
 <body>
 	
 	
-   <div class="container">
-   	
-      <h1>글 수정 하기</h1>
-      <%if(isMatch) {%>
-      <form action="update.jsp" method="post">
+	<div class="container">
+   		
+		
+      	<h1>글 수정 하기</h1>
+      	<%if(isMatch) {%>
+      	<form action="update.jsp" method="post">
       		<input type="hidden" name="num" value="<%=num %>"/>
-         <div>
-            <label class="form-label" for="title">제목</label>
-            <input class="form-control" type="text" value="<%=dto.getTitle() %>" name="title" id="title"/>
-         </div>
-         <div>
-            <label class="form-label" for="content">내용</label>
-            <textarea class="form-control" name="content" id="content" rows="10"><%=dto.getContent() %></textarea>
-         </div>
-         <button onclick="submitContents(this)" class="btn btn-primary mt-3" type="submit">저장</button>
-      </form>
+        	<div>
+        		<label class="form-label" for="title">제목</label>
+				<input class="form-control" type="text" value="<%=dto.getTitle() %>" name="title" id="title"/>
+			</div>
+   		    <div>
+        	    <label class="form-label" for="content">내용</label>
+            	<textarea class="form-control" name="content" id="content" rows="10"><%=dto.getContent() %></textarea>
+	        </div>
+     		<button onclick="submitContents(this)" class="btn btn-primary mt-3" type="submit">저장</button>
+     	</form>
       <%} else {%>
       	<p>남의 글은 수정할 수 없습니다.</p>
       	<a href="${pageContext.request.contextPath}/cafe/list.jsp">게시판으로 돌아가기</a>
       <%} %>
-   </div>
-   <!-- SmartEditor 에서 필요한 javascript 로딩  -->
-   <script src="${pageContext.request.contextPath }/SmartEditor/js/HuskyEZCreator.js"></script>
-   <script>
-      var oEditors = [];
+	</div>
+    <!-- SmartEditor 에서 필요한 javascript 로딩  -->
+    <script src="${pageContext.request.contextPath }/SmartEditor/js/HuskyEZCreator.js"></script>
+    <script>
+		var oEditors = [];
       
       //추가 글꼴 목록
       //var aAdditionalFontSet = [["MS UI Gothic", "MS UI Gothic"], ["Comic Sans MS", "Comic Sans MS"],["TEST","TEST"]];

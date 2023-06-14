@@ -26,6 +26,7 @@ public class EncodingFilter implements Filter {
 			// post 방식 전송했을때 한글 깨짐 방지
 			request.setCharacterEncoding("utf-8");
 		}
+
 		// 2 요청의 흐름 이어가기
 		chain.doFilter(request, response);
 	}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step02_model2.html</title>
+</head>
+<body>
+    <h1>v-model 사용하기2</h1>
+    <div id="app">
+    	<button class="btn" v-bind:class="{'btn-primary':isPrimary ,'btn-lg':islg}"></button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        let app=new Vue({
+            el:"#app",
+            data:{
+                msg:"",
+                isChecked:true,
+                lunch:"",
+                comment:"",
+                isRun:"no"
+            },
+            methods:{
+              
+            }
+        });
+    </script>    
+</body>
+</html>
