@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step07_component4.html</title>
+</head>
+<body>
+	<div id="app">
+		<form action="test.jsp" @submit="onSubmit">
+			<input type="text" v-model="greet">
+			<button type="submit">전송</button>
+		</form>
+		<p ref="result"></p>
+	</div>
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+          greet:""
+        },
+        methods:{
+          onSubmit(){
+                e.preventDefault();
+          }
+        }
+    });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

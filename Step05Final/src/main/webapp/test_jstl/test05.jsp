@@ -24,7 +24,7 @@
 		파일의 크기는
 		<fmt:formatNumber value="${size }" pattern="#,###"></fmt:formatNumber>
 	</p>
-
+		
 	<p>
 		가격은
 		<fmt:formatNumber value="2500000" type="currency"></fmt:formatNumber>

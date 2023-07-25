@@ -10,8 +10,8 @@
     <h1>v-model 사용하기</h1>
     <div id="app">
         <!-- input 요소의 value 를 msg 라는 모델명으로 사용하겠다 -->
-        <input type="text" v-model="msg" > 
-        <p>{{msg}}</p>
+        <input type="text" v-model="msg33" > 
+        <p>{{msg33}}</p>
         
         <input type="text" @input="onInput"/>
         <p>{{msg2}}</p>
@@ -21,7 +21,7 @@
         let app=new Vue({
             el:"#app",
             data:{
-              msg:"",
+              msg33:"",
               msg2:""
             },
             // v-model을 사용하면 아래의 코드를 넣을 필요가없어짐 알아서 연결됨
